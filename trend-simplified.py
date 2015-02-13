@@ -1,34 +1,102 @@
 from pylab import *
 from numpy import *
 
-figure()
+n = exp(linspace(log(1), log(1E7), 71))
 
-n = array([1, 1E7])
-
-s = [10 / 11.6E12, 200 / 11.6E12, 4000 / 11.6E12, 10 / 10E9, 200 / 10E9, 4000 / 10E9]
-print s
-sLabel = ['Dual R9 290X, 10 FLOP/step', 'Dual R9 290X, 200 FLOP/step',
-          'Dual R9 290X, 4000 FLOP/step', 'Haswell core, 10 FLOP/step',
-          'Haswell core, 200 FLOP/step', 'Haswell core, 4000 FLOP/step']
+s = [3 / 11.6E12, 200 / 11.6E12, 4000 / 11.6E12, 3 / 10E9, 200 / 10E9, 4000 / 10E9]
+print(s)
+sLabel = ['Dual R9 290X, 3 FLOP/step', 'Dual R9 290X, 200 FLOP/step',
+          'Dual R9 290X, 4000 FLOP/step', 'Nehalem core, 3 FLOP/step',
+          'Nehalem core, 200 FLOP/step', 'Nehalem core, 4000 FLOP/step']
 
 t = [0.7E-6, 5E-6, 50E-6, 400E-6]
 tLabel = ['Infiniband', '100Gb Ethernet', '1Gb Ethernet', 'Amazon EC2']
+tColor = ['r', 'g', 'b', 'k']
+
+# ---------------------- swept 1d ------------------------- #
+figure()
+
+for si in s:
+    for ti in t:
+        loglog(n, n * si + 2 * ti / n, '-', color='#444444')
 
 linesComp = []
-for si in s:
-    linesComp.append(loglog(n, n * si, '--')[0])
+for si in s[:3]:
+    linesComp.append(loglog(n, n * si, '--', lw=3)[0])
+for si in s[3:]:
+    linesComp.append(loglog(n, n * si, '-.', lw=3)[0])
 
 legendComp = legend(reversed(linesComp), reversed(sLabel), loc='upper right')
 
 linesComm = []
-for ti in t:
-    linesComm.append(loglog(n, 2 * ti / n, '-')[0])
+for ti, ci in zip(t, tColor):
+    linesComm.append(loglog(n, 2 * ti / n, '-' + ci, lw=3)[0])
+    loglog(2, ti, 'o' + ci)
 
 legendComm = legend(reversed(linesComm), reversed(tLabel), loc='upper left')
 
 grid(which='minor')
 gca().add_artist(legendComm)
 gca().add_artist(legendComp)
-xlabel('Spatial points per node')
-ylabel('Computing time per sub-timestep')
-savefig('trend-simplified')
+xlabel('Spatial points per node $n$')
+ylabel('Total time per sub-timestep')
+savefig('trend-simplified-1d')
+
+# ---------------------- swept 2d ------------------------- #
+figure()
+
+for si in s:
+    for ti in t:
+        loglog(n, n * si + 4 * ti / n**(1./2), '-', color='#444444')
+
+linesComp = []
+for si in s[:3]:
+    linesComp.append(loglog(n, n * si, '--', lw=3)[0])
+for si in s[3:]:
+    linesComp.append(loglog(n, n * si, '-.', lw=3)[0])
+
+legendComp = legend(reversed(linesComp), reversed(sLabel), loc='upper right')
+
+linesComm = []
+for ti, ci in zip(t, tColor):
+    linesComm.append(loglog(n, 4 * ti / n**(1./2), '-' + ci, lw=3)[0])
+    loglog(4**2, ti, 'o' + ci)
+
+legendComm = legend(reversed(linesComm), reversed(tLabel), loc='upper left')
+
+grid(which='minor')
+gca().add_artist(legendComm)
+gca().add_artist(legendComp)
+xlabel('Spatial points per node $n$')
+ylabel('Total time per sub-timestep')
+savefig('trend-simplified-2d')
+
+# ---------------------- swept 3d ------------------------- #
+figure()
+
+for si in s:
+    for ti in t:
+        loglog(n, n * si + 6 * ti / n**(1./3), '-', color='#444444')
+
+linesComp = []
+for si in s[:3]:
+    linesComp.append(loglog(n, n * si, '--', lw=3)[0])
+for si in s[3:]:
+    linesComp.append(loglog(n, n * si, '-.', lw=3)[0])
+
+legendComp = legend(reversed(linesComp), reversed(sLabel), loc='upper right')
+
+linesComm = []
+for ti, ci in zip(t, tColor):
+    linesComm.append(loglog(n, 6 * ti / n**(1./3), '-' + ci, lw=3)[0])
+    loglog(6**3, ti, 'o' + ci)
+
+legendComm = legend(reversed(linesComm), reversed(tLabel), loc='upper left')
+
+grid(which='minor')
+gca().add_artist(legendComm)
+gca().add_artist(legendComp)
+xlabel('Spatial points per node $n$')
+ylabel('Total time per sub-timestep')
+savefig('trend-simplified-3d')
+
