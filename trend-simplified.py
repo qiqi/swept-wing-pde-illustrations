@@ -3,13 +3,13 @@ from numpy import *
 
 n = exp(linspace(log(1), log(1E7), 71))
 
-s = [3 / 11.6E12, 200 / 11.6E12, 4000 / 11.6E12, 3 / 10E9, 200 / 10E9, 4000 / 10E9]
+s = [3 / 40E12, 200 / 40E12, 4000 / 40E12, 3 / 10E9, 200 / 10E9, 4000 / 10E9]
 print(s)
-sLabel = ['Dual R9 290X, 3 FLOP/step', 'Dual R9 290X, 200 FLOP/step',
-          'Dual R9 290X, 4000 FLOP/step', 'Nehalem core, 3 FLOP/step',
+sLabel = ['Summit node, 3 FLOP/step', 'Summit node, 200 FLOP/step',
+          'Summit node, 4000 FLOP/step', 'Nehalem core, 3 FLOP/step',
           'Nehalem core, 200 FLOP/step', 'Nehalem core, 4000 FLOP/step']
 
-t = [0.7E-6, 5E-6, 50E-6, 400E-6]
+t = [0.7E-6, 5E-6, 50E-6, 150E-6]
 tLabel = ['Infiniband', '100Gb Ethernet', '1Gb Ethernet', 'Amazon EC2']
 tColor = ['r', 'g', 'b', 'k']
 
@@ -55,7 +55,7 @@ for si in s[:3]:
 for si in s[3:]:
     linesComp.append(loglog(n, n * si, '-.', lw=3)[0])
 
-legendComp = legend(reversed(linesComp), reversed(sLabel), loc='upper right')
+legendComp = legend(reversed(linesComp), reversed(sLabel), loc='lower left')
 
 linesComm = []
 for ti, ci in zip(t, tColor):
@@ -84,7 +84,7 @@ for si in s[:3]:
 for si in s[3:]:
     linesComp.append(loglog(n, n * si, '-.', lw=3)[0])
 
-legendComp = legend(reversed(linesComp), reversed(sLabel), loc='upper right')
+legendComp = legend(reversed(linesComp), reversed(sLabel), loc='lower left')
 
 linesComm = []
 for ti, ci in zip(t, tColor):
