@@ -14,7 +14,7 @@ def prepFigure():
     
     axis('scaled')
     xlim([-1/2, nx * nNode-1/2])
-    ylim([-1/2, nt-1/2])
+    ylim([-1/4, nt-1/2])
     xlabel('spatial point')
     ylabel('sub-timestep')
 
@@ -112,3 +112,10 @@ savefig('swept1d-illustrate-7')
 diamond(nx//2, nx*3//2)
 savefig('swept1d-illustrate-8')
 
+figure()
+prepFigure()
+nNodeExtra = int(nNode * nx / nt)
+linesX = arange(-nNodeExtra - 1, nNode+nNodeExtra) * nx - 1.5
+plot([linesX, linesX + nt + 1], [linesX * 0, linesX * 0 + nt + 1], 'r')
+plot([linesX, linesX - nt - 1], [linesX * 0, linesX * 0 + nt + 1], 'b')
+savefig('swept1d-illustrate-lines')
