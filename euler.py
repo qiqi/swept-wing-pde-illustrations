@@ -19,3 +19,21 @@ grid(which='major')
 xlabel('Spatial points per node $n$')
 ylabel('Total time per sub-timestep')
 savefig('euler-1d')
+
+xy = loadtxt('./data/ks1d.out')
+
+figure(figsize=(7,6))
+loglog(xy[:,0], xy[:,1], '--s')
+loglog(xy[:,0], xy[:,2], '-d')
+
+loglog([1,2E2], [200, 1], '-k')
+loglog([1E2,1E5], [1, 1E3], '--k')
+ylim([1, 1E4])
+
+legend(['Straight decomposition', 'Swept decomposition'], loc='upper left')
+
+grid(which='minor')
+grid(which='major')
+xlabel('Spatial points per node $n$')
+ylabel('Total time per sub-timestep')
+savefig('ks-1d')
