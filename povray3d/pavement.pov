@@ -2,6 +2,7 @@
 #include "shapes.inc"
 
 camera {
+  right 1920/1080*x
   location < 2,  2, -5> 
   look_at  <-1, -1, -1>
 }
@@ -115,5 +116,5 @@ union {
   #end
   #end
 }               
-light_source { <2, 4, -3> color White}
+light_source { <2, 4, -3> color rgb <4.0,4.0,4.0>}
 
